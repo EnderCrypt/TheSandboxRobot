@@ -20,14 +20,6 @@ public class Robot
 	// DEBUG //
 	
 	/**
-	 * this makes the whole simulation pause
-	 */
-	public void playSimulation()
-	{
-		simulation.play();
-	}
-	
-	/**
 	 * pauses the simulation, mildly usefull for debugging
 	 */
 	public void pauseSimulation()
