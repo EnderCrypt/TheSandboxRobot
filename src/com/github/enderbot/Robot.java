@@ -76,7 +76,7 @@ public class Robot
 	
 	/**
 	 * attempts to grab the item infront of it
-	 * @return
+	 * @return if grab was successful
 	 */
 	public boolean grab()
 	{
@@ -86,7 +86,7 @@ public class Robot
 	
 	/**
 	 * attempts to place the carried item infront of it
-	 * @return
+	 * @return if place was successful
 	 */
 	public boolean place()
 	{
