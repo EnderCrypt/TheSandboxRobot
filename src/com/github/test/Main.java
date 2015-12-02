@@ -21,9 +21,10 @@ public class Main
 				int track1 = 0;
 				while (robot.look() == 0)
 				{
-					robot.rotateRight();
-					robot.forwards();
-					robot.rotateLeft();
+//					robot.rotateRight();
+//					robot.forwards();
+//					robot.rotateLeft();
+					robot.strafeLeft();
 					track1++;
 				}
 				int track2 = 0;

@@ -195,7 +195,7 @@ public class Robot
 		simulation.blockIfPause();
 		try
 		{
-			simulation.animate(new Move(1));
+			simulation.animate(new Move(-1));
 		}
 		catch (RobotActionFailed e)
 		{
@@ -222,7 +222,7 @@ public class Robot
 		simulation.blockIfPause();
 		try
 		{
-			simulation.animate(new Move(-1));
+			simulation.animate(new Move(1));
 		}
 		catch (RobotActionFailed e)
 		{
