@@ -78,6 +78,30 @@ public class Robot
 	}
 	
 	/**
+	 * tells you if theres something right infront of you
+	 * @return
+	 */
+	public boolean detect()
+	{
+		return (simulation.robotEntity.getFrontEntity(simulation) != null);
+	}
+	
+	/**
+	 * tells you what is right infront of you
+	 * @return
+	 */
+	public Class<? extends Entity> detectWhat()
+	{
+		Entity entity = simulation.robotEntity.getFrontEntity(simulation);
+		if (entity == null)
+		{
+			return null;
+		}
+		Class<? extends Entity> type = entity.getClass();
+		return type;
+	}
+	
+	/**
 	 * checks if the bot has available storage in it
 	 * @return
 	 */

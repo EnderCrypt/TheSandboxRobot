@@ -47,6 +47,12 @@ public class RobotEntity extends DynamicEntity
 		return position;
 	}
 	
+	public Entity getFrontEntity(Simulation simulation)
+	{
+		Coordinate coordinate = getFrontCoordinates(simulation);
+		return simulation.getEntity(coordinate);
+	}
+	
 	public boolean hasFreeCarryStorage()
 	{
 		return (carried.size() < MAX_CARRY);
