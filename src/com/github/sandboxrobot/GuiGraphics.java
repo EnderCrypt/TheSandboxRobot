@@ -26,6 +26,7 @@ public enum GuiGraphics
 	ROBOT("robot"),
 	WALL("wall"),
 	CRATE("crate"),
+	CLONE("cog"),
 	;
 	private static final boolean IS_JAR = GuiGraphics.class.getResource(GuiGraphics.class.getSimpleName()+".class").toString().startsWith("jar:");
 	

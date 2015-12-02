@@ -175,6 +175,16 @@ public class Simulation
 	{
 		// handle user bot
 		robotEntity.action = action;
+		// update all entities
+		Set<Entity> entitiesToUpdate = new HashSet<>();
+		for (Entry<Coordinate, Entity> entity : entities.entrySet())
+		{
+			entitiesToUpdate.add(entity.getValue());
+		}
+		for (Entity entity : entitiesToUpdate)
+		{
+			entity.update(this);
+		}
 		// collect all dynamic entities
 		Set<DynamicEntity> dynamicEntities = new HashSet<>();
 		for (Entry<Coordinate, Entity> entry : entities.entrySet())
@@ -218,10 +228,10 @@ public class Simulation
 		}
 	}
 	
-	protected Entity createEntity(Class<? extends Entity> paintClass, Coordinate tile) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException
+	public Entity createEntity(Class<? extends Entity> paintClass, Coordinate tile) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException
 	{
-		Constructor<? extends Entity> constructor = paintClass.getConstructor(Coordinate.class);
-		Entity entity = constructor.newInstance(new Object[] { tile });
+		Constructor<? extends Entity> constructor = paintClass.getConstructor(Simulation.class, Coordinate.class);
+		Entity entity = constructor.newInstance(new Object[] { this, tile });
 		synchronized (entities)
 		{
 			entities.put(entity.getPosition(), entity);

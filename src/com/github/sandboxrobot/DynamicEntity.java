@@ -11,9 +11,9 @@ public class DynamicEntity extends Entity
 	private Rotation rotation;
 	private double radRotation;
 	protected Action action;
-	public DynamicEntity(Coordinate position, Rotation rotation, GuiGraphics graphic)
+	public DynamicEntity(Simulation simulation, Coordinate position, Rotation rotation, GuiGraphics graphic)
 	{
-		super(position, graphic);
+		super(simulation, position, graphic);
 		setRotation(rotation);
 	}
 	

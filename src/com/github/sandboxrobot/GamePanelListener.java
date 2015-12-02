@@ -94,7 +94,10 @@ public class GamePanelListener implements MouseMotionListener, MouseListener
 			tile.y = simulation.getGameYTile(e.getY());
 			if (gamePanel.paintClass == null)
 			{
-				simulation.entities.remove(tile);
+				if (simulation.getEntity(tile) != simulation.robotEntity)
+				{
+					simulation.entities.remove(tile);
+				}
 			}
 			else
 			{

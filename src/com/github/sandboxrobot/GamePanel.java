@@ -12,6 +12,7 @@ import java.util.TimerTask;
 
 import javax.swing.JPanel;
 
+import com.github.sandboxrobot.entites.Clone;
 import com.github.sandboxrobot.entites.Crate;
 import com.github.sandboxrobot.entites.Wall;
 
@@ -122,8 +123,20 @@ public class GamePanel extends JPanel
 			}
 		}));
 		
+		// place clone
+		buttons.add(new GuiButton(simulation, new Point(32+(32*6), 10), GuiGraphics.CLONE, new Clickable()
+		{
+			@Override
+			public void clicked(Simulation simulation, GuiButton source, Point point)
+			{
+				focusedButton = source;
+				paintBrushing = true;
+				paintClass = Clone.class;
+			}
+		}));
+		
 		// place wall
-		buttons.add(new GuiButton(simulation, new Point(32+(32*6), 10), GuiGraphics.WALL, new Clickable()
+		buttons.add(new GuiButton(simulation, new Point(32+(32*7), 10), GuiGraphics.WALL, new Clickable()
 		{
 			@Override
 			public void clicked(Simulation simulation, GuiButton source, Point point)
@@ -135,7 +148,7 @@ public class GamePanel extends JPanel
 		}));
 		
 		// place box
-		buttons.add(new GuiButton(simulation, new Point(32+(32*7), 10), GuiGraphics.CRATE, new Clickable()
+		buttons.add(new GuiButton(simulation, new Point(32+(32*8), 10), GuiGraphics.CRATE, new Clickable()
 		{
 			@Override
 			public void clicked(Simulation simulation, GuiButton source, Point point)

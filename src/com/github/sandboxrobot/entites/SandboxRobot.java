@@ -19,9 +19,9 @@ public class SandboxRobot extends DynamicEntity
 	
 	private List<Entity> carried = new ArrayList<>();
 	
-	public SandboxRobot(Coordinate position)
+	public SandboxRobot(Simulation simulation, Coordinate position)
 	{
-		super(position, Rotation.NORTH, GuiGraphics.ROBOT);
+		super(simulation, position, Rotation.NORTH, GuiGraphics.ROBOT);
 	}
 	
 	public void setDebug(boolean debug_messages)

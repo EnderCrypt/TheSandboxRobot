@@ -6,9 +6,9 @@ import java.awt.geom.AffineTransform;
 public class StaticEntity extends Entity
 {
 
-	public StaticEntity(Coordinate position, GuiGraphics graphic)
+	public StaticEntity(Simulation simulation, Coordinate position, GuiGraphics graphic)
 	{
-		super(position, graphic);
+		super(simulation, position, graphic);
 	}
 	
 	@Override

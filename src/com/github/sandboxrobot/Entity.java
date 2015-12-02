@@ -8,7 +8,7 @@ public abstract class Entity // do not extend this, use static or dynamic entity
 	protected Coordinate position;
 	private GuiGraphics graphic;
 	private boolean grabAble = false;
-	Entity(Coordinate position, GuiGraphics graphic)
+	Entity(Simulation simulation, Coordinate position, GuiGraphics graphic)
 	{
 		this.position = position.getLocation();
 		setGraphic(graphic);
@@ -51,6 +51,11 @@ public abstract class Entity // do not extend this, use static or dynamic entity
 	protected void setGraphic(GuiGraphics graphic)
 	{
 		this.graphic = graphic;
+	}
+	
+	public void update(Simulation simulation)
+	{
+		// to be overridden
 	}
 	
 	protected void draw(AffineTransform affineTransform, Graphics2D g2d)
