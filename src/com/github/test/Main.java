@@ -21,7 +21,7 @@ public class Main
 				int track1 = 0;
 				while (robot.look() == 0)
 				{
-					robot.strafeLeft();
+					robot.strafeRight();
 					track1++;
 				}
 				int track2 = 0;
