@@ -14,6 +14,10 @@ public class Robot
 	
 	// ADVANCED //
 	
+	/**
+	 * sets the animation speed of the simulation
+	 * @param simulationSpeed
+	 */
 	public void setSpeed(double simulationSpeed)
 	{
 		simulation.setSpeed((int) (250/simulationSpeed));
