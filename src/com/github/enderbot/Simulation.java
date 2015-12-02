@@ -158,9 +158,12 @@ public class Simulation
 		// draw entities
 		AffineTransform defaultAffineTransform = new AffineTransform();
 		defaultAffineTransform.translate( getScreenX(0), getScreenY(0) );
-		for (Entry<Coordinate, Entity> entry : entities.entrySet())
+		synchronized (entities)
 		{
-			entry.getValue().draw(new AffineTransform(defaultAffineTransform), g2d);
+			for (Entry<Coordinate, Entity> entry : entities.entrySet())
+			{
+				entry.getValue().draw(new AffineTransform(defaultAffineTransform), g2d);
+			}
 		}
 	}
 	
