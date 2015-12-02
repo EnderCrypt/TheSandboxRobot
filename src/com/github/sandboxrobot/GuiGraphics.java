@@ -1,4 +1,4 @@
-package com.github.enderbot;
+package com.github.sandboxrobot;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;

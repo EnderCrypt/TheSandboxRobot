@@ -1,7 +1,7 @@
 package com.github.test;
 
-import com.github.enderbot.Robot;
-import com.github.enderbot.entites.Crate;
+import com.github.sandboxrobot.Robot;
+import com.github.sandboxrobot.entites.Crate;
 
 public class Main
 {

@@ -1,4 +1,4 @@
-package com.github.enderbot;
+package com.github.sandboxrobot;
 
 public enum Rotation
 {

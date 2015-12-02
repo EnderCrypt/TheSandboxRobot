@@ -1,12 +1,12 @@
-package com.github.enderbot.actions;
+package com.github.sandboxrobot.actions;
 
 import java.awt.Point;
 
-import com.github.enderbot.Action;
-import com.github.enderbot.Coordinate;
-import com.github.enderbot.DynamicEntity;
-import com.github.enderbot.RobotActionFailed;
-import com.github.enderbot.Simulation;
+import com.github.sandboxrobot.Action;
+import com.github.sandboxrobot.Coordinate;
+import com.github.sandboxrobot.DynamicEntity;
+import com.github.sandboxrobot.RobotActionFailed;
+import com.github.sandboxrobot.Simulation;
 
 public class Move implements Action
 {

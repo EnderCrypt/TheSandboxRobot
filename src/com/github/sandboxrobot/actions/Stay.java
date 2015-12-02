@@ -1,8 +1,8 @@
-package com.github.enderbot.actions;
+package com.github.sandboxrobot.actions;
 
-import com.github.enderbot.Action;
-import com.github.enderbot.DynamicEntity;
-import com.github.enderbot.Simulation;
+import com.github.sandboxrobot.Action;
+import com.github.sandboxrobot.DynamicEntity;
+import com.github.sandboxrobot.Simulation;
 
 public class Stay implements Action
 {

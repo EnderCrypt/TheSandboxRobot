@@ -1,4 +1,4 @@
-package com.github.enderbot;
+package com.github.sandboxrobot;
 
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;

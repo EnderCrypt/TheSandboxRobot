@@ -1,4 +1,4 @@
-package com.github.enderbot;
+package com.github.sandboxrobot;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -13,7 +13,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 
-import com.github.enderbot.entites.RobotEntity;
+import com.github.sandboxrobot.entites.SandboxRobot;
 
 public class Simulation
 {
@@ -22,7 +22,7 @@ public class Simulation
 	
 	// game stuff
 	protected HashMap<Coordinate, Entity> entities = new HashMap<>();
-	protected RobotEntity robotEntity;
+	protected SandboxRobot robotEntity;
 	protected Point view = new Point(0, 0);
 	private Dimension centerOfScreen = new Dimension();
 	private boolean playing = true;
@@ -36,7 +36,7 @@ public class Simulation
 		gameFrame = new GameFrame(this);
 		try
 		{
-			robotEntity = (RobotEntity) createEntity(RobotEntity.class, new Coordinate(0, 0));
+			robotEntity = (SandboxRobot) createEntity(SandboxRobot.class, new Coordinate(0, 0));
 		}
 		catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e)
 		{

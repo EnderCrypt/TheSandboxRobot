@@ -1,16 +1,16 @@
-package com.github.enderbot.entites;
+package com.github.sandboxrobot.entites;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.github.enderbot.Coordinate;
-import com.github.enderbot.DynamicEntity;
-import com.github.enderbot.Entity;
-import com.github.enderbot.GuiGraphics;
-import com.github.enderbot.Rotation;
-import com.github.enderbot.Simulation;
+import com.github.sandboxrobot.Coordinate;
+import com.github.sandboxrobot.DynamicEntity;
+import com.github.sandboxrobot.Entity;
+import com.github.sandboxrobot.GuiGraphics;
+import com.github.sandboxrobot.Rotation;
+import com.github.sandboxrobot.Simulation;
 
-public class RobotEntity extends DynamicEntity
+public class SandboxRobot extends DynamicEntity
 {
 	private static final int MAX_VISION = 10;
 	private static final int MAX_CARRY = 10;
@@ -19,7 +19,7 @@ public class RobotEntity extends DynamicEntity
 	
 	private List<Entity> carried = new ArrayList<>();
 	
-	public RobotEntity(Coordinate position)
+	public SandboxRobot(Coordinate position)
 	{
 		super(position, Rotation.NORTH, GuiGraphics.ROBOT);
 	}

@@ -1,4 +1,4 @@
-package com.github.enderbot;
+package com.github.sandboxrobot;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -12,8 +12,8 @@ import java.util.TimerTask;
 
 import javax.swing.JPanel;
 
-import com.github.enderbot.entites.Crate;
-import com.github.enderbot.entites.Wall;
+import com.github.sandboxrobot.entites.Crate;
+import com.github.sandboxrobot.entites.Wall;
 
 @SuppressWarnings("serial")
 public class GamePanel extends JPanel

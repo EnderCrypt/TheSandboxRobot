@@ -1,8 +1,8 @@
-package com.github.enderbot;
+package com.github.sandboxrobot;
 
-import com.github.enderbot.actions.Move;
-import com.github.enderbot.actions.Rotate;
-import com.github.enderbot.actions.Stay;
+import com.github.sandboxrobot.actions.Move;
+import com.github.sandboxrobot.actions.Rotate;
+import com.github.sandboxrobot.actions.Stay;
 
 public class Robot
 {

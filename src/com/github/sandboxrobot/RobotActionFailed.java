@@ -1,4 +1,4 @@
-package com.github.enderbot;
+package com.github.sandboxrobot;
 
 @SuppressWarnings("serial")
 public class RobotActionFailed extends RuntimeException
