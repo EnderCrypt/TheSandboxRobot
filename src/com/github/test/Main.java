@@ -1,6 +1,7 @@
 package com.github.test;
 
 import com.github.enderbot.Robot;
+import com.github.enderbot.entites.Crate;
 
 public class Main
 {
@@ -11,22 +12,13 @@ public class Main
 		robot.pauseSimulation();
 		while (true)
 		{
-			robot.rotateLeft();
-			if (robot.grab())
+			if (robot.lookWhat() == Crate.class)
 			{
-				robot.rotateRight();
-				robot.rotateRight();
-				robot.place();
-				robot.rotateLeft();
-			}
-			else
-			{
-				robot.rotateRight();
-			}
-			if (robot.forwards() == false)
-			{
-				robot.rotateLeft();
-				robot.rotateLeft();
+				while (robot.look() > 0)
+				{
+					robot.forwards();
+				}
+				robot.grab();
 			}
 		}
 	}

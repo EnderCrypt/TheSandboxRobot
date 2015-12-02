@@ -35,6 +35,11 @@ public class Robot
 		simulation.pause();
 	}
 	
+	public void activateDebug()
+	{
+		simulation.robotEntity.setDebug(true);
+	}
+	
 	// PUBLIC COMMANDS //
 	
 	/**
@@ -71,6 +76,15 @@ public class Robot
 		Class<? extends Entity> type = entity.getClass();
 		return type;
 	}
+	
+	/**
+	 * checks if the bot has available storage in it
+	 * @return
+	 */
+	public boolean hasFreeStorage()
+	{
+		return simulation.robotEntity.hasFreeCarryStorage();
+	}
 
 	// PUBLIC ROBOT ACTION COMMANDS //
 	
@@ -91,7 +105,7 @@ public class Robot
 	public boolean place()
 	{
 		simulation.blockIfPause();
-		return simulation.robotEntity.put(simulation);
+		return simulation.robotEntity.place(simulation);
 	}
 	
 	/**

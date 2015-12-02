@@ -13,12 +13,28 @@ import com.github.enderbot.Simulation;
 public class RobotEntity extends DynamicEntity
 {
 	private static final int MAX_VISION = 10;
+	private static final int MAX_CARRY = 10;
+	
+	private boolean debug_messages = false;
 	
 	private List<Entity> carried = new ArrayList<>();
 	
 	public RobotEntity(Coordinate position)
 	{
 		super(position, Rotation.NORTH, GuiGraphics.ROBOT);
+	}
+	
+	public void setDebug(boolean debug_messages)
+	{
+		this.debug_messages = debug_messages;
+	}
+	
+	private void debug(String message)
+	{
+		if (debug_messages)
+		{
+			System.err.println(message);
+		}
 	}
 	
 	private Coordinate getFrontCoordinates(Simulation simulation)
@@ -31,16 +47,28 @@ public class RobotEntity extends DynamicEntity
 		return position;
 	}
 	
+	public boolean hasFreeCarryStorage()
+	{
+		return (carried.size() < MAX_CARRY);
+	}
+	
 	public boolean grab(Simulation simulation)
 	{
 		Coordinate position = getFrontCoordinates(simulation);
 		Entity grab = simulation.getEntity(position);
 		if (grab == null)
 		{
+			debug("Alert: tried to grab nothing");
+			return false;
+		}
+		if (hasFreeCarryStorage() == false)
+		{
+			debug("Warning: storage capacity was reached");
 			return false;
 		}
 		if (grab.isGrabAble() == false)
 		{
+			debug("Alert: tried to grab unGrabAble object");
 			return false;
 		}
 		simulation.removeEntity(position);
@@ -48,15 +76,17 @@ public class RobotEntity extends DynamicEntity
 		return true;
 	}
 	
-	public boolean put(Simulation simulation)
+	public boolean place(Simulation simulation)
 	{
 		if (carried.size() == 0)
 		{
+			debug("Alert: tried to place nothing");
 			return false;
 		}
 		Coordinate position = getFrontCoordinates(simulation);
 		if (simulation.isFreeTile(position) == false)
 		{
+			debug("Alert: tried to place on occupied space");
 			return false;
 		}
 		Entity entity = carried.remove(carried.size()-1);
