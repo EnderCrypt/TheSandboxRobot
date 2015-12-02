@@ -90,7 +90,7 @@ public class RobotEntity extends DynamicEntity
 			return false;
 		}
 		Entity entity = carried.remove(carried.size()-1);
-		entity.setPosition(simulation, position); // adds it
+		entity.placeAt(simulation, position);
 		return true;
 	}
 	

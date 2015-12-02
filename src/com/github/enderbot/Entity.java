@@ -24,6 +24,15 @@ public abstract class Entity // do not extend this, use static or dynamic entity
 		}
 	}
 	
+	public void placeAt(Simulation simulation, Coordinate position)
+	{
+		synchronized (simulation.entities)
+		{
+			this.position = position;
+			simulation.entities.put(position, this);
+		}
+	}
+	
 	public void makeGrabAble()
 	{
 		grabAble = true;

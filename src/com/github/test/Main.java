@@ -8,17 +8,40 @@ public class Main
 
 	public static void main(String[] args) throws InterruptedException
 	{
-		Robot robot = new Robot(1.0);
-		robot.pauseSimulation();
+		Robot robot = new Robot(2.0);
+		//robot.pauseSimulation();
+		robot.rotateRight();
+		robot.rotateRight();
 		while (true)
 		{
-			if (robot.lookWhat() == Crate.class)
+			if ((robot.look() == 0) && (robot.lookWhat() == Crate.class))
 			{
-				while (robot.look() > 0)
+				robot.grab();
+				robot.rotateRight();
+				int track1 = 0;
+				while (robot.look() == 0)
+				{
+					robot.rotateRight();
+					robot.forwards();
+					robot.rotateLeft();
+					track1++;
+				}
+				int track2 = 0;
+				while (robot.look() > 1)
+				{
+					robot.forwards();
+					track2++;
+				}
+				robot.place();
+				for (int i=0;i<track2;i++)
+				{
+					robot.backwards();
+				}
+				robot.rotateLeft();
+				for (int i=0;i<track1;i++)
 				{
 					robot.forwards();
 				}
-				robot.grab();
 			}
 		}
 	}
