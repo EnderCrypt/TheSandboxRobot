@@ -27,12 +27,11 @@ public class Simulation
 	private Dimension centerOfScreen = new Dimension();
 	private boolean playing = true;
 	private CountDownLatch cdl = null;
-	private int simulationSpeed;
+	private int simulationSpeed = 250;
 	
-	protected Simulation(int simulationSpeed)
+	protected Simulation()
 	{
 		GuiGraphics.loadAll();
-		this.simulationSpeed = simulationSpeed;
 		gameFrame = new GameFrame(this);
 		try
 		{
@@ -42,6 +41,11 @@ public class Simulation
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	public void setSpeed(int frames)
+	{
+		this.simulationSpeed = frames;
 	}
 	
 	public void centerCamera()

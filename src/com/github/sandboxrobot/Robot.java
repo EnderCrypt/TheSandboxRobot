@@ -6,18 +6,18 @@ import com.github.sandboxrobot.actions.Stay;
 
 public class Robot
 {
-	private Simulation simulation;
+	private final Simulation simulation;
 	public Robot()
 	{
-		this(1.0);
+		simulation = new Simulation();
 	}
 	
-	public Robot(double simulationSpeed)
+	// ADVANCED //
+	
+	public void setSpeed(double simulationSpeed)
 	{
-		simulation = new Simulation((int) (250/simulationSpeed));
+		simulation.setSpeed((int) (250/simulationSpeed));
 	}
-	
-	// DEBUG //
 	
 	/**
 	 * pauses the simulation, mildly usefull for debugging
