@@ -156,6 +156,21 @@ public class Robot
 		simulation.animate(new Stay());
 	}
 	
+	public int forwards(int moves)
+	{
+		int succeded = 0;
+		for (int i=0;i<moves;i++)
+		{
+			if (forwards() == false)
+			{
+				break;
+			}
+			succeded++;
+			
+		}
+		return succeded;
+	}
+	
 	/**
 	 * attempts to move the robot forwards
 	 * @return weather moving forwards was successfull
@@ -172,6 +187,21 @@ public class Robot
 			return false;
 		}
 		return true;
+	}
+	
+	public int backwards(int moves)
+	{
+		int succeded = 0;
+		for (int i=0;i<moves;i++)
+		{
+			if (backwards() == false)
+			{
+				break;
+			}
+			succeded++;
+			
+		}
+		return succeded;
 	}
 	
 	/**
@@ -201,6 +231,21 @@ public class Robot
 		simulation.animate(new Rotate(-1));
 	}
 	
+	public int strafeLeft(int moves)
+	{
+		int succeded = 0;
+		for (int i=0;i<moves;i++)
+		{
+			if (strafeLeft() == false)
+			{
+				break;
+			}
+			succeded++;
+			
+		}
+		return succeded;
+	}
+	
 	/**
 	 * attempts to move the robot towards the left of its current direction, whitout rotating it
 	 * @return weather true/false moving was successful
@@ -226,6 +271,21 @@ public class Robot
 	{
 		simulation.blockIfPause();
 		simulation.animate(new Rotate(1));
+	}
+	
+	public int strafeRight(int moves)
+	{
+		int succeded = 0;
+		for (int i=0;i<moves;i++)
+		{
+			if (strafeRight() == false)
+			{
+				break;
+			}
+			succeded++;
+			
+		}
+		return succeded;
 	}
 	
 	/**
