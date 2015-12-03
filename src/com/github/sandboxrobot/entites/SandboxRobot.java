@@ -1,5 +1,6 @@
 package com.github.sandboxrobot.entites;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,8 +11,12 @@ import com.github.sandboxrobot.GuiGraphics;
 import com.github.sandboxrobot.Rotation;
 import com.github.sandboxrobot.Simulation;
 
-public class SandboxRobot extends DynamicEntity
+public class SandboxRobot extends DynamicEntity implements Serializable
 {
+	private static final long serialVersionUID = 2637006857204169174L;
+	/**
+	 * 
+	 */
 	private static final int MAX_VISION = 10;
 	private static final int MAX_CARRY = 10;
 	

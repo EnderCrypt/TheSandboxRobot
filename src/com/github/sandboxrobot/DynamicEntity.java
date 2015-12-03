@@ -4,13 +4,18 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Point2D.Double;
+import java.io.Serializable;
 
-public class DynamicEntity extends Entity
+public class DynamicEntity extends Entity implements Serializable
 {
+	private static final long serialVersionUID = 903973447436729599L;
+	/**
+	 * 
+	 */
 	private Point2D.Double animationOffset = new Point2D.Double();
 	private Rotation rotation;
 	private double radRotation;
-	protected Action action;
+	protected transient Action action;
 	public DynamicEntity(Simulation simulation, Coordinate position, Rotation rotation, GuiGraphics graphic)
 	{
 		super(simulation, position, graphic);

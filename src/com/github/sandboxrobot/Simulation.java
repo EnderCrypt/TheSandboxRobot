@@ -1,5 +1,6 @@
 package com.github.sandboxrobot;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -18,7 +19,7 @@ import com.github.sandboxrobot.entites.SandboxRobot;
 public class Simulation
 {
 	// gui
-	private GameFrame gameFrame;
+	protected GameFrame gameFrame;
 	
 	// game stuff
 	protected HashMap<Coordinate, Entity> entities = new HashMap<>();
@@ -27,12 +28,14 @@ public class Simulation
 	private Dimension centerOfScreen = new Dimension();
 	private boolean playing = true;
 	private CountDownLatch cdl = null;
-	private int simulationSpeed = 250;
+	private int simulationSpeed;
+	private double simulationSpeedmultiplier = 1.0;
 	
 	protected Simulation()
 	{
 		GuiGraphics.loadAll();
 		gameFrame = new GameFrame(this);
+		setSpeed(simulationSpeedmultiplier);
 		try
 		{
 			robotEntity = (SandboxRobot) createEntity(SandboxRobot.class, new Coordinate(0, 0));
@@ -43,9 +46,17 @@ public class Simulation
 		}
 	}
 	
-	public void setSpeed(int frames)
+	public void setSpeed(double multiplier)
 	{
-		this.simulationSpeed = frames;
+		multiplier = Math.min(multiplier, 1000);
+		multiplier = Math.max(multiplier, 0.1);
+		this.simulationSpeedmultiplier = multiplier;
+		this.simulationSpeed = (int) (250/multiplier);
+	}
+	
+	public double getSpeed()
+	{
+		return simulationSpeedmultiplier;
 	}
 	
 	public void centerCamera()
@@ -169,6 +180,14 @@ public class Simulation
 				entry.getValue().draw(new AffineTransform(defaultAffineTransform), g2d);
 			}
 		}
+		// speed info
+		String speedString = "Speed: "+getSpeed();
+		int length = g2d.getFontMetrics().stringWidth(speedString);
+		g2d.setColor(Color.WHITE);
+		g2d.fillRect(5, 55, length+10, 20);
+		g2d.setColor(Color.BLACK);
+		g2d.drawRect(5, 55, length+10, 20);
+		g2d.drawString(speedString, 10, 70);
 	}
 	
 	protected void animate(Action action) // blocking

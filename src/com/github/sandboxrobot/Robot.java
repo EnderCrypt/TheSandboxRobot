@@ -1,5 +1,8 @@
 package com.github.sandboxrobot;
 
+import java.io.File;
+import java.io.IOException;
+
 import com.github.sandboxrobot.actions.Move;
 import com.github.sandboxrobot.actions.Rotate;
 import com.github.sandboxrobot.actions.Stay;
@@ -10,6 +13,19 @@ public class Robot
 	public Robot()
 	{
 		simulation = new Simulation();
+	}
+	
+	public Robot(String scenario)
+	{
+		this();
+		try
+		{
+			SaveModule.load(simulation, new File(SaveModule.saveDirectory+"/"+scenario));
+		}
+		catch (ClassNotFoundException | IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	// ADVANCED //
@@ -31,6 +47,9 @@ public class Robot
 		simulation.pause();
 	}
 	
+	/**
+	 * makes the bot show debug messages about what happends
+	 */
 	public void activateDebug()
 	{
 		simulation.robotEntity.setDebug(true);

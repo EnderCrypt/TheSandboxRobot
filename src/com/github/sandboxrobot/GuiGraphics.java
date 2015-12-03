@@ -17,12 +17,15 @@ public enum GuiGraphics
 	// buttons
 	PAUSE("pause"),
 	PLAY("play"),
+	SAVE("save"),
+	LOAD("load"),
 	FOLLOW("follow"),
 	MOVE_SCREEN("move_screen"),
 	FIND("find"),
-	ERASER("eraser"),
+	SPEED("speed"),
 	
 	// stuff
+	ERASER("eraser"),
 	ROBOT("robot"),
 	WALL("wall"),
 	CRATE("crate"),
@@ -66,10 +69,10 @@ public enum GuiGraphics
 			{
 				if (IS_JAR)
 				{
-					try (InputStream in = GuiGraphics.class.getClassLoader().getResourceAsStream(DIRECTORY + graphic.filename + IMAGE_EXTENSION))
+					// GuiGraphics.class.getClassLoader().getResourceAsStream
+					try (InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream(DIRECTORY + graphic.filename + IMAGE_EXTENSION))
 					{
-						Image image = null;
-						image = ImageIO.read(in);
+						Image image = ImageIO.read(in);
 						graphic.bufferedImage = (BufferedImage) image;
 					}
 					catch (IOException e)

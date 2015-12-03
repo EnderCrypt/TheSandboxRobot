@@ -8,9 +8,10 @@ public class Main
 
 	public static void main(String[] args) throws InterruptedException
 	{
-		Robot robot = new Robot();
-		robot.setSpeed(10.0);
-		//robot.pauseSimulation();
+		Robot robot = new Robot("storage 1.scen");
+		
+		robot.pauseSimulation();
+		
 		robot.rotateRight();
 		robot.rotateRight();
 		while (true)

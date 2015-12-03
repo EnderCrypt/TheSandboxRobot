@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import com.github.sandboxrobot.entites.Clone;
@@ -63,7 +64,7 @@ public class GamePanel extends JPanel
 	private void registerButtons()
 	{
 		// play and pause button
-		playAndPauseButton = new GuiButton(simulation, new Point(10, 10), simulation.isPlaying()?GuiGraphics.PAUSE:GuiGraphics.PLAY, new Clickable()
+		playAndPauseButton = new GuiButton(simulation, new Point(10+(32*0), 10), simulation.isPlaying()?GuiGraphics.PAUSE:GuiGraphics.PLAY, new Clickable()
 		{
 			@Override
 			public void clicked(Simulation simulation, GuiButton source, Point point)
@@ -76,9 +77,49 @@ public class GamePanel extends JPanel
 		});
 		buttons.add(playAndPauseButton);
 		
+		// eraser button
+		buttons.add(new GuiButton(simulation, new Point(10+(32*1), 10), GuiGraphics.SPEED, new Clickable()
+		{
+			@Override
+			public void clicked(Simulation simulation, GuiButton source, Point point)
+			{
+				String result = JOptionPane.showInputDialog(simulation.gameFrame, "Choose simulation speed (current="+simulation.getSpeed()+")", "Simulation speed", JOptionPane.INFORMATION_MESSAGE);
+				double speed;
+				try
+				{
+					speed = Double.parseDouble(result);
+					simulation.setSpeed(speed);
+				}
+				catch (NumberFormatException e)
+				{
+					JOptionPane.showMessageDialog(simulation.gameFrame, "The value you typed in invalid, please choose a number", "Invalid input", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		}));
+		
+		// save
+		buttons.add(new GuiButton(simulation, new Point(10+(32*3), 10), GuiGraphics.SAVE, new Clickable()
+		{
+			@Override
+			public void clicked(Simulation simulation, GuiButton source, Point point)
+			{
+				SaveModule.askSave(simulation);
+			}
+		}));
+		
+		// load
+		buttons.add(new GuiButton(simulation, new Point(10+(32*4), 10), GuiGraphics.LOAD, new Clickable()
+		{
+			@Override
+			public void clicked(Simulation simulation, GuiButton source, Point point)
+			{
+				JOptionPane.showMessageDialog(simulation.gameFrame, "loading scenarios after your code has already started can lead to problems", "Load warning", JOptionPane.WARNING_MESSAGE);
+				SaveModule.askLoad(simulation);
+			}
+		}));
 		
 		// move screen button
-		moveScreenButton = new GuiButton(simulation, new Point(32+(32*1), 10), GuiGraphics.MOVE_SCREEN, new Clickable()
+		moveScreenButton = new GuiButton(simulation, new Point(10+(32*6), 10), GuiGraphics.MOVE_SCREEN, new Clickable()
 		{
 			@Override
 			public void clicked(Simulation simulation, GuiButton source, Point point)
@@ -90,7 +131,7 @@ public class GamePanel extends JPanel
 		buttons.add(moveScreenButton);
 		
 		// move screen button
-		buttons.add(new GuiButton(simulation, new Point(32+(32*2), 10), GuiGraphics.FIND, new Clickable()
+		buttons.add(new GuiButton(simulation, new Point(10+(32*7), 10), GuiGraphics.FIND, new Clickable()
 		{
 			@Override
 			public void clicked(Simulation simulation, GuiButton source, Point point)
@@ -100,7 +141,7 @@ public class GamePanel extends JPanel
 		}));
 		
 		// follow robot button
-		folowRobotButton = new GuiButton(simulation, new Point(32+(32*3), 10), GuiGraphics.FOLLOW, new Clickable()
+		folowRobotButton = new GuiButton(simulation, new Point(10+(32*8), 10), GuiGraphics.FOLLOW, new Clickable()
 		{
 			@Override
 			public void clicked(Simulation simulation, GuiButton source, Point point)
@@ -112,7 +153,7 @@ public class GamePanel extends JPanel
 		buttons.add(folowRobotButton);
 		
 		// eraser button
-		buttons.add(new GuiButton(simulation, new Point(32+(32*5), 10), GuiGraphics.ERASER, new Clickable()
+		buttons.add(new GuiButton(simulation, new Point(10+(32*10), 10), GuiGraphics.ERASER, new Clickable()
 		{
 			@Override
 			public void clicked(Simulation simulation, GuiButton source, Point point)
@@ -124,7 +165,7 @@ public class GamePanel extends JPanel
 		}));
 		
 		// place clone
-		buttons.add(new GuiButton(simulation, new Point(32+(32*6), 10), GuiGraphics.CLONE, new Clickable()
+		buttons.add(new GuiButton(simulation, new Point(10+(32*11), 10), GuiGraphics.CLONE, new Clickable()
 		{
 			@Override
 			public void clicked(Simulation simulation, GuiButton source, Point point)
@@ -136,7 +177,7 @@ public class GamePanel extends JPanel
 		}));
 		
 		// place wall
-		buttons.add(new GuiButton(simulation, new Point(32+(32*7), 10), GuiGraphics.WALL, new Clickable()
+		buttons.add(new GuiButton(simulation, new Point(10+(32*12), 10), GuiGraphics.WALL, new Clickable()
 		{
 			@Override
 			public void clicked(Simulation simulation, GuiButton source, Point point)
@@ -148,7 +189,7 @@ public class GamePanel extends JPanel
 		}));
 		
 		// place box
-		buttons.add(new GuiButton(simulation, new Point(32+(32*8), 10), GuiGraphics.CRATE, new Clickable()
+		buttons.add(new GuiButton(simulation, new Point(10+(32*13), 10), GuiGraphics.CRATE, new Clickable()
 		{
 			@Override
 			public void clicked(Simulation simulation, GuiButton source, Point point)

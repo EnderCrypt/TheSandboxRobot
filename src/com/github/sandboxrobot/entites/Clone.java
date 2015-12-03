@@ -1,5 +1,6 @@
 package com.github.sandboxrobot.entites;
 
+import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 
 import com.github.sandboxrobot.Coordinate;
@@ -8,8 +9,12 @@ import com.github.sandboxrobot.Rotation;
 import com.github.sandboxrobot.Simulation;
 import com.github.sandboxrobot.StaticEntity;
 
-public class Clone extends StaticEntity
+public class Clone extends StaticEntity implements Serializable
 {
+	private static final long serialVersionUID = 2804239022879065427L;
+	/**
+	 * 
+	 */
 
 	public Clone(Simulation simulation, Coordinate position)
 	{

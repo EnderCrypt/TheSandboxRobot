@@ -2,9 +2,14 @@ package com.github.sandboxrobot;
 
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
+import java.io.Serializable;
 
-public abstract class Entity // do not extend this, use static or dynamic entity instead
+public abstract class Entity implements Serializable // do not extend this, use static or dynamic entity instead
 {
+	private static final long serialVersionUID = 5470870075421239827L;
+	/**
+	 * 
+	 */
 	protected Coordinate position;
 	private GuiGraphics graphic;
 	private boolean grabAble = false;
