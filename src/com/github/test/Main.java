@@ -10,8 +10,6 @@ public class Main
 	{
 		Robot robot = new Robot("storage 1.scen");
 		
-		robot.pauseSimulation();
-		
 		robot.rotateRight();
 		robot.rotateRight();
 		while (true)

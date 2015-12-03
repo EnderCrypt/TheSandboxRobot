@@ -27,7 +27,8 @@ public class Simulation
 	protected Point view = new Point(0, 0);
 	private Dimension centerOfScreen = new Dimension();
 	private boolean playing = true;
-	private CountDownLatch cdl = null;
+	private CountDownLatch startCdl = new CountDownLatch(1);
+	private CountDownLatch pauseCdl = null;
 	private int simulationSpeed;
 	private double simulationSpeedmultiplier = 1.0;
 	
@@ -41,6 +42,19 @@ public class Simulation
 			robotEntity = (SandboxRobot) createEntity(SandboxRobot.class, new Coordinate(0, 0));
 		}
 		catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public void awaitGui()
+	{
+		try
+		{
+			startCdl.await();
+			Thread.sleep(250);
+		}
+		catch (InterruptedException e)
 		{
 			e.printStackTrace();
 		}
@@ -84,9 +98,9 @@ public class Simulation
 	protected void play()
 	{
 		playing = true;
-		if (cdl != null)
+		if (pauseCdl != null)
 		{
-			cdl.countDown();
+			pauseCdl.countDown();
 		}
 		gameFrame.gamePanel.playAndPauseButton.setGraphic(GuiGraphics.PAUSE);
 	}
@@ -188,6 +202,9 @@ public class Simulation
 		g2d.setColor(Color.BLACK);
 		g2d.drawRect(5, 55, length+10, 20);
 		g2d.drawString(speedString, 10, 70);
+		
+		// finish
+		startCdl.countDown();
 	}
 	
 	protected void animate(Action action) // blocking
@@ -242,8 +259,8 @@ public class Simulation
 	{
 		if (playing == false)
 		{
-			cdl = new CountDownLatch(1);
-			try{cdl.await();}catch(InterruptedException e){e.printStackTrace();}
+			pauseCdl = new CountDownLatch(1);
+			try{pauseCdl.await();}catch(InterruptedException e){e.printStackTrace();}
 		}
 	}
 	

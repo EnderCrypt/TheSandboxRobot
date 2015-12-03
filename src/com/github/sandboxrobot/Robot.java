@@ -13,11 +13,12 @@ public class Robot
 	public Robot()
 	{
 		simulation = new Simulation();
+		simulation.awaitGui();
 	}
 	
 	public Robot(String scenario)
 	{
-		this();
+		simulation = new Simulation();
 		try
 		{
 			SaveModule.load(simulation, new File(SaveModule.saveDirectory+"/"+scenario));
@@ -26,6 +27,7 @@ public class Robot
 		{
 			e.printStackTrace();
 		}
+		simulation.awaitGui();
 	}
 	
 	// ADVANCED //
@@ -45,6 +47,7 @@ public class Robot
 	public void pauseSimulation()
 	{
 		simulation.pause();
+		simulation.blockIfPause(); // needs to be tested
 	}
 	
 	/**
