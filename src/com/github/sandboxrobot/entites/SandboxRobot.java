@@ -18,7 +18,7 @@ public class SandboxRobot extends DynamicEntity implements Serializable
 	 * 
 	 */
 	private static final int MAX_VISION = 10;
-	private static final int MAX_CARRY = 10;
+	private static final int MAX_CARRY = 3;
 	
 	private boolean debug_messages = false;
 	
