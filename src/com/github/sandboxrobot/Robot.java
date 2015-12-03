@@ -38,7 +38,7 @@ public class Robot
 	 */
 	public void setSpeed(double simulationSpeed)
 	{
-		simulation.setSpeed((int) (250/simulationSpeed));
+		simulation.setSpeed(simulationSpeed);
 	}
 	
 	/**
