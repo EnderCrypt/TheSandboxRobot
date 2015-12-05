@@ -5,34 +5,41 @@ import java.awt.Point;
 public class Coordinate extends Point
 {
 	private static final long serialVersionUID = 4475659348797056469L;
+
 	/**
 	 * 
 	 */
-	
+
 	public Coordinate()
 	{
 		x = 0;
 		y = 0;
 	}
-	
+
 	public Coordinate(Point point)
 	{
 		x = point.x;
 		y = point.y;
 	}
-	
+
 	public Coordinate(int x, int y)
 	{
 		this.x = x;
 		this.y = y;
 	}
-	
+
+	public void add(Rotation rotation, int length)
+	{
+		Point movement = rotation.getMovement();
+		translate(movement.x * length, movement.y * length);
+	}
+
 	@Override
 	public Coordinate getLocation()
 	{
 		return new Coordinate(x, y);
 	}
-	
+
 	@Override
 	public int hashCode()
 	{
@@ -42,6 +49,7 @@ public class Coordinate extends Point
 		result = prime * result + y;
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj)
 	{

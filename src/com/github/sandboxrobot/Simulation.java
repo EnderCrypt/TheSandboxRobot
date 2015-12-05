@@ -20,9 +20,10 @@ public class Simulation
 {
 	// gui
 	protected GameFrame gameFrame;
-	
+
 	// game stuff
 	protected HashMap<Coordinate, Entity> entities = new HashMap<>();
+	protected HashMap<Coordinate, Color> marks = new HashMap<>();
 	protected SandboxRobot robotEntity;
 	protected Point view = new Point(0, 0);
 	private Dimension centerOfScreen = new Dimension();
@@ -31,7 +32,7 @@ public class Simulation
 	private CountDownLatch pauseCdl = null;
 	private int simulationSpeed;
 	private double simulationSpeedmultiplier = 1.0;
-	
+
 	protected Simulation()
 	{
 		GuiGraphics.loadAll();
@@ -46,7 +47,7 @@ public class Simulation
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void awaitGui()
 	{
 		try
@@ -59,42 +60,42 @@ public class Simulation
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void setSpeed(double multiplier)
 	{
 		multiplier = Math.min(multiplier, 1000);
 		multiplier = Math.max(multiplier, 0.1);
 		this.simulationSpeedmultiplier = multiplier;
-		this.simulationSpeed = (int) (250/multiplier);
+		this.simulationSpeed = (int) (250 / multiplier);
 	}
-	
+
 	public double getSpeed()
 	{
 		return simulationSpeedmultiplier;
 	}
-	
+
 	public void centerCamera()
 	{
 		Point2D.Double offset = robotEntity.getAnimationOffset();
-		view.x = (int) ((robotEntity.position.x*32)+(offset.x*32));
-		view.y = (int) ((robotEntity.position.y*32)+(offset.y*32));
+		view.x = (int) ((robotEntity.position.x * 32) + (offset.x * 32));
+		view.y = (int) ((robotEntity.position.y * 32) + (offset.y * 32));
 	}
-	
+
 	public Dimension getScreenSize()
 	{
 		return gameFrame.getContentPane().getSize();
 	}
-	
+
 	public Dimension getCenterOfScreenSize()
 	{
 		return centerOfScreen.getSize();
 	}
-	
+
 	protected boolean isPlaying()
 	{
 		return playing;
 	}
-	
+
 	protected void play()
 	{
 		playing = true;
@@ -104,48 +105,60 @@ public class Simulation
 		}
 		gameFrame.gamePanel.playAndPauseButton.setGraphic(GuiGraphics.PAUSE);
 	}
-	
+
 	public void pause()
 	{
 		playing = false;
 		gameFrame.gamePanel.playAndPauseButton.setGraphic(GuiGraphics.PLAY);
 	}
-	
+
 	protected int getScreenX(int x)
 	{
-		return (x+centerOfScreen.width-view.x);
+		return (x + centerOfScreen.width - view.x);
 	}
-	
+
 	protected int getScreenY(int y)
 	{
-		return (y+centerOfScreen.height-view.y);
+		return (y + centerOfScreen.height - view.y);
 	}
-	
+
+	protected boolean isInsideView(int screenX, int screenY, Dimension screenSize, int tolerance)
+	{
+		// return ((screenX > -(centerOfScreen.width + tolerance))
+		// && (screenY > -(centerOfScreen.height + tolerance))
+		// && (screenX < (centerOfScreen.width + tolerance))
+		// && (screenY < (centerOfScreen.height + tolerance)));
+		return (screenX > -tolerance)
+				&& (screenY > -tolerance)
+				&& (screenX < (screenSize.width + tolerance))
+				&& (screenY < (screenSize.height + tolerance));
+	}
+
 	protected int getGameX(int x)
 	{
-		return (x+view.x-centerOfScreen.width);
+		return (x + view.x - centerOfScreen.width);
 	}
-	
+
 	protected int getGameY(int y)
 	{
-		return (y+view.y-centerOfScreen.height);
+		return (y + view.y - centerOfScreen.height);
 	}
-	
+
 	protected int getGameXTile(int x)
 	{
-		return (int) Math.floor((double)(getGameX(x)+16)/32);
+		return (int) Math.floor((double) (getGameX(x) + 16) / 32);
 	}
-	
+
 	protected int getGameYTile(int y)
 	{
-		return (int) Math.floor((double)(getGameY(y)+16)/32);
+		return (int) Math.floor((double) (getGameY(y) + 16) / 32);
 	}
-	
+
 	public boolean isFreeTile(Coordinate tile)
 	{
 		return (getEntity(tile) == null);
 	}
-	
+
 	public Entity getEntity(Coordinate tile)
 	{
 		synchronized (entities)
@@ -153,7 +166,7 @@ public class Simulation
 			return entities.get(tile);
 		}
 	}
-	
+
 	public Entity removeEntity(Coordinate tile)
 	{
 		synchronized (entities)
@@ -161,7 +174,7 @@ public class Simulation
 			return entities.remove(tile);
 		}
 	}
-	
+
 	public void addEntity(Entity entity)
 	{
 		synchronized (entities)
@@ -173,40 +186,55 @@ public class Simulation
 			entities.put(entity.getPosition(), entity);
 		}
 	}
-	
+
 	protected void viewDragged(Point drag)
 	{
 		view.x += drag.x;
 		view.y += drag.y;
 	}
-	
+
 	protected void draw(Graphics2D g2d, Dimension screenSize)
 	{
 		// init
-		centerOfScreen = new Dimension(screenSize.width/2, screenSize.height/2);
+		centerOfScreen = new Dimension(screenSize.width / 2, screenSize.height / 2);
 		// draw entities
 		AffineTransform defaultAffineTransform = new AffineTransform();
-		defaultAffineTransform.translate( getScreenX(0), getScreenY(0) );
+		defaultAffineTransform.translate(getScreenX(0), getScreenY(0));
 		synchronized (entities)
 		{
 			for (Entry<Coordinate, Entity> entry : entities.entrySet())
 			{
-				entry.getValue().draw(new AffineTransform(defaultAffineTransform), g2d);
+				entry.getValue().draw(this, screenSize, new AffineTransform(defaultAffineTransform), g2d);
+			}
+		}
+		// draw marks
+		for (Entry<Coordinate, Color> mark : marks.entrySet())
+		{
+			Coordinate coordinate = mark.getKey();
+			int x = getScreenX(coordinate.x * 32);
+			int y = getScreenY(coordinate.y * 32);
+			if (isInsideView(x, y, screenSize, -100))
+			{
+				int size = 8;
+				g2d.setColor(Color.BLACK);
+				g2d.drawOval(x - size, y - size, (size * 2), (size * 2));
+				g2d.setColor(mark.getValue());
+				g2d.fillOval(x - size, y - size, (size * 2), (size * 2));
 			}
 		}
 		// speed info
-		String speedString = "Speed: "+getSpeed();
+		String speedString = "Speed: " + getSpeed();
 		int length = g2d.getFontMetrics().stringWidth(speedString);
 		g2d.setColor(Color.WHITE);
-		g2d.fillRect(5, 55, length+10, 20);
+		g2d.fillRect(5, 55, length + 10, 20);
 		g2d.setColor(Color.BLACK);
-		g2d.drawRect(5, 55, length+10, 20);
+		g2d.drawRect(5, 55, length + 10, 20);
 		g2d.drawString(speedString, 10, 70);
-		
+
 		// finish
 		startCdl.countDown();
 	}
-	
+
 	protected void animate(Action action) // blocking
 	{
 		// handle user bot
@@ -239,14 +267,21 @@ public class Simulation
 		}
 		// update
 		double progress;
-		for (int i=0;i<totalUpdates;i++)
+		for (int i = 0; i < totalUpdates; i++)
 		{
-			progress = 1.0/totalUpdates*i;
+			progress = 1.0 / totalUpdates * i;
 			for (DynamicEntity entity : dynamicEntities)
 			{
 				entity.action.update(entity, progress);
 			}
-			try{Thread.sleep(1);}catch(InterruptedException e){e.printStackTrace();}
+			try
+			{
+				Thread.sleep(1);
+			}
+			catch (InterruptedException e)
+			{
+				e.printStackTrace();
+			}
 		}
 		// finish
 		for (DynamicEntity entity : dynamicEntities)
@@ -254,17 +289,25 @@ public class Simulation
 			entity.action.finish(entity);
 		}
 	}
-	
+
 	public void blockIfPause()
 	{
 		if (playing == false)
 		{
 			pauseCdl = new CountDownLatch(1);
-			try{pauseCdl.await();}catch(InterruptedException e){e.printStackTrace();}
+			try
+			{
+				pauseCdl.await();
+			}
+			catch (InterruptedException e)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
-	
-	public Entity createEntity(Class<? extends Entity> paintClass, Coordinate tile) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException
+
+	public Entity createEntity(Class<? extends Entity> paintClass, Coordinate tile)
+			throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException
 	{
 		Constructor<? extends Entity> constructor = paintClass.getConstructor(Simulation.class, Coordinate.class);
 		Entity entity = constructor.newInstance(new Object[] { this, tile });
@@ -274,5 +317,5 @@ public class Simulation
 		}
 		return entity;
 	}
-	
+
 }

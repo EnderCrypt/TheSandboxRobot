@@ -9,42 +9,43 @@ public class Main
 	public static void main(String[] args)
 	{
 		Robot robot = new Robot("storage 1.scen");
-		
-		robot.rotateRight();
-		robot.rotateRight();
+
+		robot.rotate.right();
+		robot.rotate.right();
+		;
 		while (true)
 		{
-			if ((robot.look() == 0) && (robot.lookWhat() == Crate.class))
+			if ((robot.eye.look() == 0) && (robot.eye.lookWhat() == Crate.class))
 			{
 				robot.grab();
-				robot.rotateRight();
+				robot.rotate.right();
 				int track1 = 0;
-				while (robot.detect())
+				while (robot.eye.detect())
 				{
-					robot.strafeRight();
+					robot.strafe.right();
 					track1++;
 				}
 				int track2 = 0;
 				while (true)
 				{
-					int look = robot.look();
+					int look = robot.eye.look();
 					if ((look == -1) || (look > 1))
 					{
-						robot.forwards();
+						robot.move.forwards();
 						track2++;
 						continue;
 					}
 					break;
 				}
 				robot.place();
-				for (int i=0;i<track2;i++)
+				for (int i = 0; i < track2; i++)
 				{
-					robot.backwards();
+					robot.move.backwards();
 				}
-				robot.rotateLeft();
-				for (int i=0;i<track1;i++)
+				robot.rotate.left();
+				for (int i = 0; i < track1; i++)
 				{
-					robot.forwards();
+					robot.move.forwards();
 				}
 			}
 		}
