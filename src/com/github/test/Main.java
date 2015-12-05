@@ -6,7 +6,7 @@ import com.github.sandboxrobot.entites.Crate;
 public class Main
 {
 
-	public static void main(String[] args) throws InterruptedException
+	public static void main(String[] args)
 	{
 		Robot robot = new Robot("storage 1.scen");
 		

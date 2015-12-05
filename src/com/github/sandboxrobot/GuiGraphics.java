@@ -69,7 +69,6 @@ public enum GuiGraphics
 			{
 				if (IS_JAR)
 				{
-					// GuiGraphics.class.getClassLoader().getResourceAsStream
 					try (InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream(DIRECTORY + graphic.filename + IMAGE_EXTENSION))
 					{
 						Image image = ImageIO.read(in);
