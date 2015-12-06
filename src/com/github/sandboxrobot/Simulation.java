@@ -208,18 +208,21 @@ public class Simulation
 			}
 		}
 		// draw marks
-		for (Entry<Coordinate, Color> mark : marks.entrySet())
+		synchronized (marks)
 		{
-			Coordinate coordinate = mark.getKey();
-			int x = getScreenX(coordinate.x * 32);
-			int y = getScreenY(coordinate.y * 32);
-			if (isInsideView(x, y, screenSize, -100))
+			for (Entry<Coordinate, Color> mark : marks.entrySet())
 			{
-				int size = 8;
-				g2d.setColor(Color.BLACK);
-				g2d.drawOval(x - size, y - size, (size * 2), (size * 2));
-				g2d.setColor(mark.getValue());
-				g2d.fillOval(x - size, y - size, (size * 2), (size * 2));
+				Coordinate coordinate = mark.getKey();
+				int x = getScreenX(coordinate.x * 32);
+				int y = getScreenY(coordinate.y * 32);
+				if (isInsideView(x, y, screenSize, 16))
+				{
+					int size = 8;
+					g2d.setColor(Color.BLACK);
+					g2d.drawOval(x - size, y - size, (size * 2), (size * 2));
+					g2d.setColor(mark.getValue());
+					g2d.fillOval(x - size, y - size, (size * 2), (size * 2));
+				}
 			}
 		}
 		// speed info

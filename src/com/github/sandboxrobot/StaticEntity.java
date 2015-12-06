@@ -22,7 +22,7 @@ public class StaticEntity extends Entity implements Serializable
 	protected void draw(Simulation simulation, Dimension screenSize, AffineTransform affineTransform, Graphics2D g2d)
 	{
 		affineTransform.translate(position.x * 32, position.y * 32);
-		if (simulation.isInsideView((int) affineTransform.getTranslateX(), (int) affineTransform.getTranslateY(), screenSize, -50))
+		if (simulation.isInsideView((int) affineTransform.getTranslateX(), (int) affineTransform.getTranslateY(), screenSize, 32))
 		{
 			super.draw(simulation, screenSize, affineTransform, g2d);
 		}

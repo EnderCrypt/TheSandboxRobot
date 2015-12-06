@@ -10,6 +10,9 @@ public class Coordinate extends Point
 	 * 
 	 */
 
+	// public int x;
+	// public int y;
+
 	public Coordinate()
 	{
 		x = 0;
@@ -28,10 +31,19 @@ public class Coordinate extends Point
 		this.y = y;
 	}
 
-	public void add(Rotation rotation, int length)
+	public Coordinate add(Rotation rotation)
+	{
+		return add(rotation, 1);
+	}
+
+	/**
+	 * adds the rotation into the position, and returns itself
+	 */
+	public Coordinate add(Rotation rotation, int length)
 	{
 		Point movement = rotation.getMovement();
 		translate(movement.x * length, movement.y * length);
+		return this;
 	}
 
 	@Override
@@ -61,4 +73,5 @@ public class Coordinate extends Point
 		if (y != other.y) return false;
 		return true;
 	}
+
 }

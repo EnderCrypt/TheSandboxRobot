@@ -17,23 +17,23 @@ public class SandboxRobot extends DynamicEntity implements Serializable
 	/**
 	 * 
 	 */
-	private static final int MAX_VISION = 10;
-	private static final int MAX_CARRY = 3;
-	
+	public static final int MAX_VISION = 10;
+	public static final int MAX_CARRY = 3;
+
 	private boolean debug_messages = false;
-	
+
 	private List<Entity> carried = new ArrayList<>();
-	
+
 	public SandboxRobot(Simulation simulation, Coordinate position)
 	{
 		super(simulation, position, Rotation.NORTH, GuiGraphics.ROBOT);
 	}
-	
+
 	public void setDebug(boolean debug_messages)
 	{
 		this.debug_messages = debug_messages;
 	}
-	
+
 	private void debug(String message)
 	{
 		if (debug_messages)
@@ -41,7 +41,7 @@ public class SandboxRobot extends DynamicEntity implements Serializable
 			System.err.println(message);
 		}
 	}
-	
+
 	private Coordinate getFrontCoordinates(Simulation simulation)
 	{
 		// find
@@ -51,18 +51,18 @@ public class SandboxRobot extends DynamicEntity implements Serializable
 		position.translate(direction.x, direction.y);
 		return position;
 	}
-	
+
 	public Entity getFrontEntity(Simulation simulation)
 	{
 		Coordinate coordinate = getFrontCoordinates(simulation);
 		return simulation.getEntity(coordinate);
 	}
-	
+
 	public boolean hasFreeCarryStorage()
 	{
 		return (carried.size() < MAX_CARRY);
 	}
-	
+
 	public boolean grab(Simulation simulation)
 	{
 		Coordinate position = getFrontCoordinates(simulation);
@@ -86,7 +86,7 @@ public class SandboxRobot extends DynamicEntity implements Serializable
 		carried.add(grab);
 		return true;
 	}
-	
+
 	public boolean place(Simulation simulation)
 	{
 		if (carried.size() == 0)
@@ -100,17 +100,17 @@ public class SandboxRobot extends DynamicEntity implements Serializable
 			debug("Alert: tried to place on occupied space");
 			return false;
 		}
-		Entity entity = carried.remove(carried.size()-1);
+		Entity entity = carried.remove(carried.size() - 1);
 		entity.placeAt(simulation, position);
 		return true;
 	}
-	
+
 	public int checkVision(Simulation simulation)
 	{
 		Coordinate movement = getRotation().getMovement();
 		Coordinate checkPos = getPosition();
 		int i;
-		for (i=0;i<MAX_VISION;i++)
+		for (i = 0; i < MAX_VISION; i++)
 		{
 			checkPos.translate(movement.x, movement.y);
 			if (simulation.isFreeTile(checkPos) == false)
@@ -123,7 +123,7 @@ public class SandboxRobot extends DynamicEntity implements Serializable
 		else
 			return i;
 	}
-	
+
 	public Entity checkVisionWhat(Simulation simulation)
 	{
 		int dist = checkVision(simulation);
@@ -134,7 +134,7 @@ public class SandboxRobot extends DynamicEntity implements Serializable
 		Coordinate position = getPosition();
 		Coordinate movement = getRotation().getMovement();
 		dist++; // needed
-		Coordinate target = new Coordinate(position.x+(movement.x*dist), position.y+(movement.y*dist));
+		Coordinate target = new Coordinate(position.x + (movement.x * dist), position.y + (movement.y * dist));
 		return simulation.getEntity(target);
 	}
 

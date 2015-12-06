@@ -1,29 +1,28 @@
 package com.github.sandboxrobot;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 
+import com.github.sandboxrobot.actions.Move;
+import com.github.sandboxrobot.actions.Rotate;
 import com.github.sandboxrobot.actions.Stay;
+import com.github.sandboxrobot.entites.SandboxRobot;
 
 public class Robot
 {
 	private final Simulation simulation;
 
-	public final Robot_move move;
-	public final Robot_eye eye;
-	public final Robot_strafe strafe;
-	public final Robot_rotate rotate;
-	public final Robot_mark mark;
+	public final MoveCategory move = new MoveCategory();
+	public final EyeCategory eye = new EyeCategory();
+	public final StrafeCategory strafe = new StrafeCategory();
+	public final RotateCategory rotate = new RotateCategory();
+	public final MarkCategory mark = new MarkCategory();
 
 	public Robot()
 	{
 		simulation = new Simulation();
 		// finalize
-		move = new Robot_move(simulation);
-		eye = new Robot_eye(simulation);
-		strafe = new Robot_strafe(simulation);
-		rotate = new Robot_rotate(simulation);
-		mark = new Robot_mark(simulation);
 		simulation.awaitGui();
 	}
 
@@ -39,11 +38,6 @@ public class Robot
 			e.printStackTrace();
 		}
 		// finalize
-		move = new Robot_move(simulation);
-		eye = new Robot_eye(simulation);
-		strafe = new Robot_strafe(simulation);
-		rotate = new Robot_rotate(simulation);
-		mark = new Robot_mark(simulation);
 		simulation.awaitGui();
 	}
 
@@ -78,12 +72,25 @@ public class Robot
 
 	// PUBLIC COMMANDS //
 
+	public int getVisionDistance()
+	{
+		return SandboxRobot.MAX_VISION;
+	}
+
 	/**
 	 * @return the rotation of the robot
 	 */
 	public Rotation getRotation()
 	{
 		return simulation.robotEntity.getRotation();
+	}
+
+	/**
+	 * @return the coordinates of the robot
+	 */
+	public Coordinate getPosition()
+	{
+		return simulation.robotEntity.getPosition();
 	}
 
 	/**
@@ -129,4 +136,297 @@ public class Robot
 		simulation.animate(new Stay());
 	}
 
+	/**
+	 * This category contains methods for moving forwards and backwards
+	 */
+	public class MoveCategory
+	{
+		/**
+		 * attempts to move the robot forwards a certain amount of moves
+		 * 
+		 * @return weather moving forwards was successfull
+		 */
+
+		public int forwards(int moves)
+		{
+			int succeded = 0;
+			for (int i = 0; i < moves; i++)
+			{
+				if (forwards() == false)
+				{
+					break;
+				}
+				succeded++;
+
+			}
+			return succeded;
+		}
+
+		/**
+		 * attempts to move the robot forwards
+		 * 
+		 * @return weather moving forwards was successfull
+		 */
+		public boolean forwards()
+		{
+			simulation.blockIfPause();
+			try
+			{
+				simulation.animate(new Move(0));
+			}
+			catch (RobotActionFailed e)
+			{
+				return false;
+			}
+			return true;
+		}
+
+		/**
+		 * attempts to move the robot backwards a certain amount of moves
+		 * 
+		 * @return weather true/false moving was successful
+		 */
+		public int backwards(int moves)
+		{
+			int succeded = 0;
+			for (int i = 0; i < moves; i++)
+			{
+				if (backwards() == false)
+				{
+					break;
+				}
+				succeded++;
+
+			}
+			return succeded;
+		}
+
+		/**
+		 * attempts to move the robot backwards
+		 * 
+		 * @return weather true/false moving was successful
+		 */
+		public boolean backwards()
+		{
+			simulation.blockIfPause();
+			try
+			{
+				simulation.animate(new Move(-2));
+			}
+			catch (RobotActionFailed e)
+			{
+				return false;
+			}
+			return true;
+		}
+	}
+
+	/**
+	 * this category contains methods for seeing and looking at external data
+	 */
+	public class EyeCategory
+	{
+		public int look()
+		{
+			return simulation.robotEntity.checkVision(simulation);
+		}
+
+		/**
+		 * tells you what object it is seeing
+		 * 
+		 * @return the class of the object it is seeing
+		 */
+		public Class<? extends Entity> lookWhat()
+		{
+			Entity entity = simulation.robotEntity.checkVisionWhat(simulation);
+			if (entity == null)
+			{
+				return null;
+			}
+			Class<? extends Entity> type = entity.getClass();
+			return type;
+		}
+
+		/**
+		 * tells you if theres something right infront of you
+		 * 
+		 * @return
+		 */
+		public boolean detect()
+		{
+			return (simulation.robotEntity.getFrontEntity(simulation) != null);
+		}
+
+		/**
+		 * tells you what is right infront of you
+		 * 
+		 * @return
+		 */
+		public Class<? extends Entity> detectWhat()
+		{
+			Entity entity = simulation.robotEntity.getFrontEntity(simulation);
+			if (entity == null)
+			{
+				return null;
+			}
+			Class<? extends Entity> type = entity.getClass();
+			return type;
+		}
+	}
+
+	/**
+	 * category for strafing left and right of the currently aimed direction
+	 */
+	public class StrafeCategory
+	{
+		/**
+		 * attempts to move the robot towards the left of its current direction
+		 * a certain amount of moves, whitout rotating it
+		 * 
+		 * @return weather true/false moving was successful
+		 */
+		public int left(int moves)
+		{
+			int succeded = 0;
+			for (int i = 0; i < moves; i++)
+			{
+				if (left() == false)
+				{
+					break;
+				}
+				succeded++;
+
+			}
+			return succeded;
+		}
+
+		/**
+		 * attempts to move the robot towards the left of its current direction,
+		 * whitout rotating it
+		 * 
+		 * @return weather true/false moving was successful
+		 */
+		public boolean left()
+		{
+			simulation.blockIfPause();
+			try
+			{
+				simulation.animate(new Move(-1));
+			}
+			catch (RobotActionFailed e)
+			{
+				return false;
+			}
+			return true;
+		}
+
+		/**
+		 * attempts to move the robot towards the right of its current direction
+		 * a certain amount of moves, whitout rotating it
+		 * 
+		 * @return weather true/false moving was successful
+		 */
+		public int right(int moves)
+		{
+			int succeded = 0;
+			for (int i = 0; i < moves; i++)
+			{
+				if (right() == false)
+				{
+					break;
+				}
+				succeded++;
+
+			}
+			return succeded;
+		}
+
+		/**
+		 * attempts to move the robot towards the right of its current
+		 * direction, whitout rotating it
+		 * 
+		 * @return weather true/false moving was successful
+		 */
+		public boolean right()
+		{
+			simulation.blockIfPause();
+			try
+			{
+				simulation.animate(new Move(1));
+			}
+			catch (RobotActionFailed e)
+			{
+				return false;
+			}
+			return true;
+		}
+	}
+
+	/**
+	 * this category contains methods for rotating the robot left and right
+	 */
+	public class RotateCategory
+	{
+		/**
+		 * makes the robot rotate to the left
+		 */
+		public void left()
+		{
+			simulation.blockIfPause();
+			simulation.animate(new Rotate(-1));
+		}
+
+		/**
+		 * makes the robot rotate to the right
+		 */
+		public void right()
+		{
+			simulation.blockIfPause();
+			simulation.animate(new Rotate(1));
+		}
+	}
+
+	/**
+	 * this category contains methods for marking tiles with diffrent colors
+	 * (mostly for debugging)
+	 */
+	public class MarkCategory
+	{
+		public void set(Coordinate coordinate, Color color)
+		{
+			set(coordinate.x, coordinate.y, color);
+		}
+
+		public void set(int x, int y, Color color)
+		{
+			synchronized (simulation.marks)
+			{
+				simulation.marks.put(new Coordinate(x, y), color);
+			}
+		}
+
+		public void setHere(Color color)
+		{
+			Coordinate coord = simulation.robotEntity.getPosition();
+			set(coord.x, coord.y, color);
+		}
+
+		public void remove(Coordinate coordinate, Color color)
+		{
+			remove(coordinate.x, coordinate.y);
+		}
+
+		public void remove(int x, int y)
+		{
+			synchronized (simulation.marks)
+			{
+				simulation.marks.remove(new Coordinate(x, y));
+			}
+		}
+
+		public void clear()
+		{
+			simulation.marks.clear();
+		}
+	}
 }
