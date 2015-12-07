@@ -218,7 +218,7 @@ public class GamePanel extends JPanel
 		}
 		//
 
-		simulation.draw(g2d, screenSize.getSize());
+		simulation.draw(g2d, screenSize.getSize(), gamePanelListener.mousePosition);
 
 		g2d.setColor(Color.GRAY);
 		g2d.fillRect(0, 0, screenSize.width, 50);
@@ -234,5 +234,6 @@ public class GamePanel extends JPanel
 				g2d.drawImage(GuiGraphics.SELECTED.getImage(), null, location.x, location.y);
 			}
 		}
+		g2d.dispose();
 	}
 }

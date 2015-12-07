@@ -29,13 +29,21 @@ public class Robot
 	public Robot(String scenario)
 	{
 		simulation = new Simulation();
-		try
+		File file = new File(SaveModule.saveDirectory + "/" + scenario);
+		if ((file.exists()) && (file.isFile()))
 		{
-			SaveModule.load(simulation, new File(SaveModule.saveDirectory + "/" + scenario));
+			try
+			{
+				SaveModule.load(simulation, file);
+			}
+			catch (ClassNotFoundException | IOException e)
+			{
+				e.printStackTrace();
+			}
 		}
-		catch (ClassNotFoundException | IOException e)
+		else
 		{
-			e.printStackTrace();
+			System.err.println("The scenario file " + file.getAbsolutePath() + " does not exist");
 		}
 		// finalize
 		simulation.awaitGui();
@@ -280,8 +288,7 @@ public class Robot
 	public class StrafeCategory
 	{
 		/**
-		 * attempts to move the robot towards the left of its current direction
-		 * a certain amount of moves, whitout rotating it
+		 * attempts to move the robot towards the left of its current direction a certain amount of moves, whitout rotating it
 		 * 
 		 * @return weather true/false moving was successful
 		 */
@@ -301,8 +308,7 @@ public class Robot
 		}
 
 		/**
-		 * attempts to move the robot towards the left of its current direction,
-		 * whitout rotating it
+		 * attempts to move the robot towards the left of its current direction, whitout rotating it
 		 * 
 		 * @return weather true/false moving was successful
 		 */
@@ -321,8 +327,7 @@ public class Robot
 		}
 
 		/**
-		 * attempts to move the robot towards the right of its current direction
-		 * a certain amount of moves, whitout rotating it
+		 * attempts to move the robot towards the right of its current direction a certain amount of moves, whitout rotating it
 		 * 
 		 * @return weather true/false moving was successful
 		 */
@@ -342,8 +347,7 @@ public class Robot
 		}
 
 		/**
-		 * attempts to move the robot towards the right of its current
-		 * direction, whitout rotating it
+		 * attempts to move the robot towards the right of its current direction, whitout rotating it
 		 * 
 		 * @return weather true/false moving was successful
 		 */
@@ -387,46 +391,68 @@ public class Robot
 	}
 
 	/**
-	 * this category contains methods for marking tiles with diffrent colors
-	 * (mostly for debugging)
+	 * this category contains methods for marking tiles with diffrent colors (mostly for debugging)
 	 */
 	public class MarkCategory
 	{
-		public void set(Coordinate coordinate, Color color)
+		private Mark get(Coordinate coordinate)
 		{
-			set(coordinate.x, coordinate.y, color);
+			coordinate = coordinate.getLocation();
+			Mark mark = null;
+			synchronized (simulation.marks)
+			{
+				mark = simulation.marks.get(coordinate);
+				if (mark == null)
+				{
+					mark = new Mark();
+					simulation.marks.put(coordinate, mark);
+				}
+			}
+			return mark;
 		}
 
 		public void set(int x, int y, Color color)
 		{
-			synchronized (simulation.marks)
-			{
-				simulation.marks.put(new Coordinate(x, y), color);
-			}
+			set(new Coordinate(x, y), color);
 		}
 
-		public void setHere(Color color)
+		public void set(Coordinate coordinate, Color color)
 		{
-			Coordinate coord = simulation.robotEntity.getPosition();
-			set(coord.x, coord.y, color);
+			Mark mark = get(coordinate);
+			mark.setColor(color);
 		}
 
-		public void remove(Coordinate coordinate, Color color)
+		public void set(int x, int y, Color color, String text)
 		{
-			remove(coordinate.x, coordinate.y);
+			set(new Coordinate(x, y), color, text);
+		}
+
+		public void set(Coordinate coordinate, Color color, String text)
+		{
+			Mark mark = get(coordinate);
+			mark.setColor(color);
+			mark.setText(text);
 		}
 
 		public void remove(int x, int y)
 		{
+			remove(new Coordinate(x, y));
+		}
+
+		public void remove(Coordinate coordinate)
+		{
 			synchronized (simulation.marks)
 			{
-				simulation.marks.remove(new Coordinate(x, y));
+				simulation.marks.remove(coordinate);
 			}
 		}
 
 		public void clear()
 		{
-			simulation.marks.clear();
+			synchronized (simulation.marks)
+			{
+				simulation.marks.clear();
+			}
 		}
 	}
 }

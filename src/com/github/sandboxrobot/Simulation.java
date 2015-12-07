@@ -23,7 +23,7 @@ public class Simulation
 
 	// game stuff
 	protected HashMap<Coordinate, Entity> entities = new HashMap<>();
-	protected HashMap<Coordinate, Color> marks = new HashMap<>();
+	protected HashMap<Coordinate, Mark> marks = new HashMap<>();
 	protected SandboxRobot robotEntity;
 	protected Point view = new Point(0, 0);
 	private Dimension centerOfScreen = new Dimension();
@@ -124,10 +124,6 @@ public class Simulation
 
 	protected boolean isInsideView(int screenX, int screenY, Dimension screenSize, int tolerance)
 	{
-		// return ((screenX > -(centerOfScreen.width + tolerance))
-		// && (screenY > -(centerOfScreen.height + tolerance))
-		// && (screenX < (centerOfScreen.width + tolerance))
-		// && (screenY < (centerOfScreen.height + tolerance)));
 		return (screenX > -tolerance)
 				&& (screenY > -tolerance)
 				&& (screenX < (screenSize.width + tolerance))
@@ -193,9 +189,10 @@ public class Simulation
 		view.y += drag.y;
 	}
 
-	protected void draw(Graphics2D g2d, Dimension screenSize)
+	protected void draw(Graphics2D g2d, Dimension screenSize, Point mousePosition)
 	{
 		// init
+		Coordinate mouseGamePosition = new Coordinate(getGameXTile(mousePosition.x), getGameYTile(mousePosition.y));
 		centerOfScreen = new Dimension(screenSize.width / 2, screenSize.height / 2);
 		// draw entities
 		AffineTransform defaultAffineTransform = new AffineTransform();
@@ -208,22 +205,32 @@ public class Simulation
 			}
 		}
 		// draw marks
+		Mark mouseMark = null;
 		synchronized (marks)
 		{
-			for (Entry<Coordinate, Color> mark : marks.entrySet())
+			for (Entry<Coordinate, Mark> markEntry : marks.entrySet())
 			{
-				Coordinate coordinate = mark.getKey();
+				// init
+				Coordinate coordinate = markEntry.getKey();
+				Mark mark = markEntry.getValue();
+				// draw mark
 				int x = getScreenX(coordinate.x * 32);
 				int y = getScreenY(coordinate.y * 32);
 				if (isInsideView(x, y, screenSize, 16))
 				{
-					int size = 8;
-					g2d.setColor(Color.BLACK);
-					g2d.drawOval(x - size, y - size, (size * 2), (size * 2));
-					g2d.setColor(mark.getValue());
-					g2d.fillOval(x - size, y - size, (size * 2), (size * 2));
+					mark.draw(g2d, x, y);
+				}
+				// draw info
+				if (mouseGamePosition.equals(coordinate))
+				{
+					mouseMark = mark;
 				}
 			}
+		}
+		// draw text info
+		if (mouseMark != null)
+		{
+			mouseMark.drawText(g2d, mousePosition.x, mousePosition.y);
 		}
 		// speed info
 		String speedString = "Speed: " + getSpeed();
